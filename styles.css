@@ -1,0 +1,627 @@
+/* 
+UN HACK QUE RECOMIENDAN PARA EL TAMAÑO DE LA CAJA VAYA DESDE EL BORDE
+html{
+	box-sizing: border;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+
+COMENZAR LA MAQUETACION O EL DESARROLLO UTILIZANDO LA FILOSOFIA "Mobile First"
+
+
+
+*/
+
+
+
+/*
+NOTA PARA TENER EN CUENTA:
+- GRID ES UN MODELO DE LAYOUT
+- FLEXBOX ES UN MODELO DE LAYOUT
+- POSITION ES UN MODELO DE LAYOUT
+
+
+
+
+FLEXBOX ES NUEVO MODELO DE LAYOUT (ORGANIZACION DE LOS ELEMENTOS EN LA PANTALLA)
+
+ESTILOS FLEXBOX - FLEXBOX NECESITA LA RELACION PADRE-HIJO/CONTAINER-ITEMS, SIN ESTA RELACION FLEXBOX NO FUNCIONA
+
+PROPIEDADES PARA EL CONTENEDOR
+TENER EN CUENTA SIEMPRE EL MAIN AXIS Y CROSS AXIS
+
+- display: flex; Esta propiedad es indispensable activar para comenzar a trabajar con Flexbox. La propiedad flex es para que los hijos del contenedor padre se vuelvan elementos flexibles.
+				Al usar display flex automaticamente se generan 2 ejes: el main(principal) axis y el cross(secundario) axis. Por defecto, cuando se utiliza el valor flex, el main axis es horizontal y el cross axis es vertical.
+- flex-flow: #row, valor de flex-direction #wrap, valor de flex-wrap; Este es un atajo, pues con una sola instruccion ahorramos lo de 2 instrucciones separadas
+- flex-direction: row, column, row-reverse, column-reverse; Direcciones en vertical, horizontal y sus reversos. Por default viene en row. Esta propiedad es la encargada de manipular los ejes. Si ponemos column, nuestro eje principal se vuelve vertical; si ponemos row, nuestro eje principal se vuelve horizontal.
+- flex-wrap: wrap, no-wrap, wrap-reverse; Los elementos dentro un contenedor se acomodan de acuerdo al ancho del contenedor padre. o sea, si no hay espacio que salte a la siguiente linea el item.
+- justify-content: flex-end, flex-start, center, space-around, space-between; Esta propiedad funciona de acuerdo al eje principal que estemos usando. Esta propiedad aplica sus efectos de acuerdo a que posicion se haya puesto en el flex-direction. El valor center reemplaza facilmente lo que se hacia usando margin auto para dejar algun elemento centrado.
+																			Justify-content alinea los elementos que hay dentro del contenedor padre de acuerdo al eje principal que estemos usando. Esta propiedad decide la posicion y distribucion de los elementos que habra dentro del contenedor flex. El valor por default de justify-content es flex-start, o sea, puede ser arriba o a la izquierda, dependiendo del eje principal que se use.
+																			space-between hace que el espacio que hay entre los elementos se distribuya uniformemente o proporcionalmente para acaparar todo el espacio que hay en el eje principal que estemos usando.
+																			space-araound hace que el espacio que hay alrededor de los elementos de distribuya.
+- align-items: flex-start, flex-end, center, baseline, stretch; Esta propiedad funciona de acuerdo al eje secundario que estemos usando. Alinea los elementos respecto al eje secundario, que por defecto es vertical. Baseline hace que los elementos se posicionen de acuerdo a una base linea, se puede tomar como ejemplo la base de algun texto. Stretch es el valor que tiene por defecto y lo que hace es ajustar los elementos acorde al alto o ancho que tenga el contenedor padre. Es necesario no utilizar valores como height o width sobre algun elemento en el que utilizaremos stretch. Nuevamente, debe tomarse en cuenta el eje que estemos usando.
+- align-content: center, flex-start, flex-end, stretch, space-around, space-between; Alinea los elementos verticalmente, pero cuando esta activa la propiedad flex-wrap, tambien se conjuga con align-items: center;
+
+------------------------------------------------------------------------------
+
+PROPIEDADES PARA LOS ELEMENTOS/ITEMS (ESTE EJEMPLO SE ENCUENTRA AL FINAL DE LA HOJA)
+TENER EN CUENTA SIEMPRE EL MAIN SIZE Y CROSS SIZE
+O SEA, AL IGUAL QUE SE JUEGA Y ELIGE CON LOS EJES PRINCIPALES Y SECUNDARIOS, ASI SUCEDE CON LOS TAMAÑOS PRINCIPALES Y SECUNDARIOS.
+MAIN Y CROSS SIZE SON LAS DIMENSIONES QUE TENDRAN LOS FLEX ITEMS, Y ESTOS TAMAÑOS ESTAN VINCULADOS AL EJE QUE ESTE UTILIZANDOSE. P.E: SI ESTAS USANDO COMO PRINCIPAL EJE COLUMN, ENTONCES SOBRE EL FLEX ITEM SE PODRA MANIPULAR EL ANCHO(width)... Y VICEVERSA;
+
+MAIN SIZE -> MAIN AXIS (DEFAULT: WIDTH)
+CROSS SIZE -> CROSS AXIS (DEFAULT: HEIGHT)
+
+UTILIZAR CROSS SIZE TIENE 3 ESCENARIOS:
+1. SE LE HA DEFINIDO EL TAMAÑO AL CONTENEDOR O A LOS ELEMENTOS POR MEDIO DE WIDTH O HEIGHT 
+	P.E: 
+	.f-item{
+	height: 200px;
+}
+	.f-item{
+	width: 200px;
+}
+
+2. NO SE HA DEFINIDO EL TAMAÑO Y NO SE HA DEFINIDO align-items o align-content
+EL CROSS SIZE OCUPA TODO EL ESPACIO DISPONIBLE DEL CONTENEDOR, O SEA, ESTA EN strech
+.f-container{
+	background: lightblue;
+	margin: auto;
+	display: flex;
+}
+
+3. NO SE DEFINE UN TAMAÑO PERO SI SE DEFINE align-items o align-content DIFERENTE DE strech.
+.f-container{
+	width: 500px;
+	height: 500px;
+	background: lightblue;
+	margin: auto;
+	display: flex;
+	align-items: flex-start; //EL TAMAÑO QUE SE ADQUIERE CON ESTA PROPIEDAD, ESTA RELACIONADO AL CONTENIDO QUE HAY DENTRO DEL FLEX ITEM
+}
+
+UTILIZAR MAIN SIZE
+TOMAR EN CUENTA:
+1. EL ESPACIO DISPONIBLE QUE NO ESTAN OCUPANDO LOS ITEMS, ESPACIO OCUPADO QUE ESTAN OCUPANDO LOS ITEMS (RELATIVO AL EJE EN EL QUE ESTEN)
+2. AL ESPACIO DISPONIBLE SIEMPRE HAY QUE QUITARLE LOS MARGENES. LOS MARGENES TAMBIEN SE TOMAN EN CUENTA COMO ESPACIO OCUPADO. LOS MARGENES NUNCA SE COLAPSAN, O SEA, NUNCA SE REDUCEN EN FLEXBOX, SOLO LAS CAJAS SON LAS QUE SE REDUCEN, LOS MARGENES NO.
+.f-item{
+	background: teal;
+	margin: 10px;
+}
+3. LOS ITEMS SE RIGEN POR LOS MISMOS PRINCIPOS DEL MODELO DE CAJA PARA CALCULAR SUS TAMAÑOS. LOS PADDINGS Y LOS BORDES SE SUMAN AL TAMAÑO TOTAL DE LA CAJA, EXCEPTO CUANDO SE UTILIZA box-sizing: border-box, CON ESTA PROPIEDAD LOS PADDINGS Y LOS BORDES SE CALCULAN POR DENTRO DE LA CAJA.
+4. EL ESPACIO DISPONIBLE PODRIA SER NEGATIVO/POSITIVO
+
+ESTAS SON 3 PROPIEDADES IMPORTANTES QUE SE UTILIZAN PARA CALCULAR EL TAMAÑO PRINCIPAL O MAIN SIZE:
+- flex-basis: ; ES LA PROPIEDAD QUE ME DA EL TAMAÑO BASE DEL TAMAÑO. NUEVAMENTE, DEPENDIENDO DEL EJE QUE SE UTILIZE SERÁ EL SIZE QUE SE MANIPULARA. POR DEFAULT, EL MAIN SIZE ES EL WIDTH, O SEA, ES LO MISMO QUE USAR WIDTH (HAY QUE TOMAR EN CUENTA EL EJE PRINCIPAL QUE ESTA USANDOSE)
+	.f-container{
+		flex-direction: column; //EJE PRINCIPAL A UTILIZAR
+	}
+	.f-item{
+		flex-basis: 150px; // ESTE BASIS SE CONVIERTE EN HEIGHT, SI UTILIZARA COMO EJE PRINCIPAL ROW ENTONCES MI BASIS SE CONVERTIRIA EN WIDTH
+	}
+
+AHORA, INDEPENDIENTEMENTE DEL BASIS QUE ESTEMOS CONTROLANDO, PUEDEN UTILIZARSE LAS PROPIEDADES WIDHT O HEIGHT... SI NUESTRO BASIS SE CONVIERTE EN HEIGHT, PODEMOS UTILIZAR WIDTH. SI NUESTRO BASIS SE CONVIERTE EN WIDTH, PODEMOS UTILIZAR HEIGHT.
+	.f-container{
+		flex-direction: column; //EJE PRINCIPAL VERTICAL
+	}
+	.f-item{
+		flex-basis: 150px;	//SI EL EJE PRINCIPAL FUERA row ENTONCES NUESTRO BASIS SERIA WIDTH Y PODRIAMOS UTILIZAR height
+		width: 200px;
+	}
+	.f-item{
+		flex-basis: 150px;	//SI EL VALOR FUERA auto EL FLEX ITEM TOMARIA EL TAMAÑO DEPENDIENDO DE SU CONTENIDO
+		width: 200px;
+	}
+
+
+RECOMENDACION DE ALVARO... NO USAR flex-basis Y UTILIZAR WIDTH
+
+- flex-grow
+- flex-shrink
+
+- order: #numero; Establece el orden en el que estaran los elementos, se puede cambiar el orden de la secuencia de los elementos que vienen maquetandose.
+- flex-grow: #numero; Establece el crecimiento que tendrá cada elemento. Segun el valor que le pongamos será el tamaño que tomara nuestro elemento sobre los demas elementos dentro del contenedor padre. Los valores hacen que los elementos tengan tamaños proporcionales, o sea, que se ajusten.
+- flex-shrink: #numero; Parecido al flex-grow pero esta propiedad reduce el tamaño de los elementos.
+- flex-basis: #numero; Puede tomarse como si utilizaras width.
+- align-self: stretch, flex-end, flex-start, center; Permite alinear un elemento de forma individual de acuerdo al eje secundario que este utilizandose en el contenedor padre. Si utilizas flex-direction: column, tu eje secundario será horizontal, y viceversa.
+- flex: #numero1 #numero2 #numero3; Es la combinacion de grow, shrik y basis
+
+*/
+
+*{
+	padding           : 0;
+	margin            : 0;
+	-webkit-box-sizing: border-box;
+}
+body{
+	padding    : 0;
+	margin     : 0;
+	background : grey;
+	font-family: 'Open sans' helvetica, arial;
+}
+.navegacion{
+	padding        : 20px;
+	background     : #ACACAC;
+	margin         : 5% auto;
+	width          : 90%; border: 1px solid #FFF;
+	list-style-type: none;
+}
+.navegacion li{
+	margin    : 10px;
+	border    : 1px olid #FFF;
+	background: #C9830A;
+}
+.navegacion i a{
+	display        : block;
+	color          : #FFF;
+	text-decoration: none;
+	font-size      : 20px;
+	padding        : 10px;
+}
+.navegacion#nav-main{
+	display        : flex;
+	flex-direction : row; /* column, row, row-reverse, column-reverse */
+	justify-content: space-between; /* flex-end, flex-start, center, space-around, space-between */
+	flex-wrap      : wrap;
+}
+.navegacion#nav-main li:last-child{
+	margin-left     : auto;
+}
+.navegacion#nav-main li:first-child{
+	margin-right     : auto;
+}
+.navegacion#nav-second{
+	display:flex;
+	flex-direction:row;
+	justify-content:space-between;
+	flex-wrap:wrap;
+}
+
+/* ----------------------------- */
+.contenedor{
+	background     : rgb(65,65,65);
+	width          : 90%;
+	margin         : 0 auto;
+	padding        : 20px;
+	border         : 7px solid yellow;	
+	display        : flex;
+	justify-content: space-between;
+	flex-direction : row;
+	align-items    : center;
+	flex-wrap      : wrap;
+	align-content  : center;
+}
+
+.flex-div{
+	background   : rgb(189,189,189);
+	padding      : 10px 20px;
+	margin       : 10px;
+	border-radius: 10px;
+	flex         : 1;
+}
+.flex-div#columna1{
+ order     : 3;
+  flex-grow: 1;
+}
+.flex-div#columna2{
+	order:1;
+	flex-grow:1;
+	align-self:flex-end;
+}
+.flex-div#columna3{
+	order: 2;
+	flex-grow: 2;
+}
+@media screen and (max-width: 750px){
+	.contenedor{
+		flex-direction: column;
+	}
+}
+
+
+
+/* ----------------------------- */
+.main-contenedor{
+	width          : 500px;
+	height         : 200px;
+	background     : #FFF;
+	padding        : 10px;
+	border         : 10px solid #2C3E50;
+	margin         : 20px;
+	display        : flex;
+	flex-direction : row;
+	flex-wrap      : wrap;
+	justify-content: space-between;
+}
+.flex-item{
+	width          : 50px;
+	height         : 50px;
+	color          : #FFF;
+	margin         : 5px;
+	background     : #E67E22;
+	text-align     : center;
+	display        : flex;
+	justify-content: center;
+	align-items    : center;
+}
+
+.item1{
+	font-size: 30px;
+}
+
+/* ----------------------------- */
+h1{
+	padding-top: 2em;
+	text-align: center;
+}
+header{
+	height: 150px;
+	background: #333;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.logo{
+	border-radius: 50%;
+}
+ul{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	align-self: flex-end;
+	margin-bottom: .5em;
+	margin-right: .5em;
+}
+ul li{
+	background: #EEE;
+	color: #333;
+	border-radius: 5px;
+	margin-left: 10px;
+	font-size: 1.3em;
+	padding: 0.5em;
+	line-height: 2;
+}
+/* ----------------------------- */
+.main-dado{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+[class^="cara-"]{
+	background: #333;
+	width     : 120px;
+	height    : 120px;
+	padding   : 10px;
+	display   : flex;
+	margin    : 1em;
+}
+
+.cara-1{
+	justify-content: center;
+	align-items: center;
+}
+.cara-2{
+	justify-content: space-between;
+}
+.cara-2 .punto:nth-child(2){
+	align-self: flex-end;
+}
+.cara-3{
+	justify-content: space-between;
+}
+.cara-3 .punto:nth-child(2){
+	align-self: center;
+}
+.cara-3 .punto:nth-child(3){
+	align-self: flex-end;
+}
+.cara-4{
+	justify-content: space-between;
+}
+.cara-4 .columna{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.cara-5{
+	display: flex;
+	justify-content: space-between;
+}
+.cara-5 .columna{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.cara-5 .medio{
+	align-self: center;
+}
+.cara-6{
+	display: flex;
+	justify-content: space-between;
+}
+.cara-6 .columna{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.punto{
+	width: 24px;
+	height: 24px;
+	background: #EEE;
+	border-radius: 50%;
+}
+
+
+/* ----------------------------- */
+.f-container{
+	width: 500px;
+	height: 500px;
+	background: lightblue;
+	margin: auto;
+/*	align-items: center;*/
+	display: flex;
+/*	flex-wrap: wrap; */
+/*	justify-content: space-around;*/
+}
+.f-item{
+	background: teal;
+	flex-basis: 100px;
+	flex-grow: 1;
+/*	height: 100px;
+	margin: 10px;*/
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #FFF;
+}
+
+.f-item:nth-child(even){
+	background: steelblue;
+}
+
+.f-item:nth-child(2){
+	flex-grow: 2;
+}
+
+
+/* EJEMPLO ARRIBA
+EXPLICACION PARA EL USO DE FLEX-GROW
+
+SIN USAR FLEX-GROW SOBRE EL FLEX ITEM:
+ESPACIO TOTAL DEL CONTENEDOR PADRE: 500px
+ESPACIO OCUPADO POR CADA ELEMENTO: 100px (4 items = 400px ocupando)
+ESPACIO DISPONIBLE: 100px
+
+USANDO FLEX-GROW: 1; SOBRE EL FLEX ITEM:
+EL TAMAÑO DE LOS ELEMENTOS HA CRECIDO HASTA LLENAR EL ESPACIO QUE ESTABA DISPONIBLE
+
+USANDO FLEX-GROW: 2; SOBRE ALGUN ELEMENTO FLEX ITEM:
+EL TAMAÑO DE ESTE ELEMENTO HA CRECIDO UN POCO MAS QUE EL RESTO (NO TIENE EL DOBLE DE TAMAÑO, O SEA, 200... NO ES EL DOBLE)
+
+DE ACUERDO A LA CANTIDAD DE ELEMENTOS QUE ESTEN USANDO LA PROPIEDAD FLEX-GROWN SE HARAN LAS OPERACIONES DE DIVISION, MULTIPLICACION Y SUMA.
+EL NUMERO QUE SE COLOCA COMO VALOR EN FLEX-GROW ES EL FACTOR DE CRECIMIENTO.
+
+EL ELEMENTO 1 TIENE FACTOR DE CRECIMIENTO 1
+EL ELEMENTO 2 TIENE FACTOR DE CRECIMIENTO 2
+EL ELEMENTO 3 TIENE FACTOR DE CRECIMIENTO 1
+EL ELEMENTO 4 TIENE FACTOR DE CRECIMIENTO 1
+SUMA TOTAL DE FLEX-GROW DE TODOS LOS ITEMSS = 5
+ENTONCES, EL ESPACIO DISPONIBLE (100px) O UNIDAD DE CRECIMIENTO SE ESTA DIVIDIENDO ENTRE 5 (100px/5=20px)
+
+ENTONCES 20 ES LA UNIDAD DE CRECIMIENTO QUE SE MULTIPLICA CON EL FACTOR DE CRECIMIENTO (20*1=20)(20*2=40)
+ENTONCES 20 + 100PX(ESPACIO INDIVIDUAL DEL ELEMENTO) = 120px
+*/
+
+.fb-container{
+	width: 90%;
+	height: 500px;
+	background: lightblue;
+	margin: 100px auto;
+	display: flex;
+}
+.fb-item{
+	background: teal;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #FFF;
+}
+
+.fb-item:nth-child(even){
+	background: steelblue;
+}
+.fb-item:nth-child(1){
+	flex-basis: 200px; /* ESTE ELEMENTO SIEMPRE TENDRA LA MEDIDA DE 200px, AUNQUE SE ESTIRE LA VENTANA DEL NAVEGADOR */
+	flex-grow: 0; /* CON ESTO SE ORDENA QUE NUNCA CREZCA, EL FACTOR DE CRECIMIENTO ES 0 */
+}
+.fb-item:nth-child(2){
+	flex-grow: 1; /* NO SE NECESITA PONER UN FLEX-BASIS PARA ESTE ELEMENTO, PUES EL TAMAÑO QUE TOMA RELATIVO AL ESPACIO DISPONIBLE */
+}
+
+
+/* EJEMPLO ABAJO
+
+FLEX-SHRINK, POR DEFECTO LOS ITEMS FLEXBOX TIENEN EL VALOR DE flex-shirnk: 1; CON SHRINK LOS ELEMENTOS SE ENCOJEN  PARA QUE NO HAYA DESBORDAMIENTOS.
+
+ESPACIO DISPONIBLE (NEGATIVO) 500px (contenedor padre) - 800px (200px por item * 4 items) = -300px
+SUMA DE FLEX-SHRINK 5 (MISMO PROCEDIMIENTO QUE EN FLEX-GROW) 
+UNIDAD DE REDUCCION -300px/5 = -60px * POR EL FACTOR QUE TENGA EL ITEM (1*-60px=-60) (200px-60=-140)
+
+*/
+
+.fbx-container{
+	width        : 500px;
+	height       : 500px;
+	background   : lightblue;
+	margin       : 100px auto;
+	display      : flex;
+/*	flex-wrap  : wrap;*/
+}
+.fbx-item{
+	background       : teal;
+	display          : flex;
+	justify-content  : center;
+	align-items      : center;
+	color            : #FFF;
+
+	flex-basis       : 200px; /* APESAR DE QUE EL TAMAÑO DE LOS ITEMS ES DE 200px EN EL RENDER DEL NAVEGADOR CADA UNO TIENE 125px */
+	flex-shrink      : 1;	background       : teal;
+	display          : flex;
+	justify-content  : center;
+	align-items      : center;
+	color            : #FFF;
+
+	flex-basis       : 200px; /* APESAR DE QUE EL TAMAÑO DE LOS ITEMS ES DE 200px EN EL RENDER DEL NAVEGADOR CADA UNO TIENE 125px */
+	flex-shrink      : 1;
+}
+
+.fbx-item:nth-child(even){
+	background: steelblue;
+}
+.fbx-item:nth-child(1){
+
+}
+.fbx-item:nth-child(2){
+	flex-shrink: 2;
+}
+
+
+
+/* ----------------------------- */
+.fbx-ctn{
+	width       : 90%;
+	height      : 500px;
+	background  : lightblue;
+	margin      : 100px auto;
+	display     : flex;
+}
+.fbx-tm{
+	background       : teal;
+	display          : flex;
+	justify-content  : center;
+	align-items      : center;
+	color            : #FFF;
+	flex-basis       : 25%;
+	margin           : 10px;
+}
+
+.fbx-tm:nth-child(even){
+	background: steelblue;
+}
+.fbx-tm:nth-child(1){
+
+}
+.fbx-tm:nth-child(2){
+
+}
+
+
+
+/* ----------------------------- */
+
+.fbx-main-ctn{
+	width: 90%;
+	height: 500px;
+	background: lightblue;
+	margin: 100px auto;
+	display: flex;
+}
+.fbx-cross-tm{
+	background: teal;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #FFF;
+	/*margin: 10px;*/
+}
+
+.fbx-cross-tm:nth-child(even){
+	background: steelblue;
+}
+.fbx-cross-tm:nth-child(1){
+	flex: 25;
+}
+.fbx-cross-tm:nth-child(2){
+	flex: 20;
+}
+.fbx-cross-tm:nth-child(3){
+	flex: 45;
+}
+.fbx-cross-tm:nth-child(4){
+	flex: 10;
+}
+
+.caja{
+	padding: 20px;
+	background: pink;
+}
+
+
+
+
+/* ----------------------------- */
+/* 
+CONCEPTO: flex-lines
+PROPIEDAD: flex-wrap
+SHORTHAND: flex-flow
+PROPIEDAD: align-content
+PROPIEDAD: order
+
+flex-lines POSEE 2 TIPOS:
+	single-line
+	multi-line
+
+AMBOS TIPOS PUEDEN CONTROLARSE UTILIZANDO flex-wrap
+
+CUANDO EL FLEXNOX ES MULTILINE, align-items NO FUNCIONA DE NADA, DEBE DE UTILIZARSE align-content.
+
+*/
+
+.flow-container{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 95%;
+	margin: auto;
+	height: 500px;
+	background: pink;
+}
+.flow-item{
+	flex: 1 0 24%;
+	margin: 5px;
+/*	width: 100px;*/
+/*	height: 100px;*/
+	background: #EEE;
+	text-align: center;
+	line-height: 100px;
+}
+
+.flow-item:nth-child(even){
+	background: lightblue;
+}
+
+
+/* 
+UN HACK PARA POSICIONAR ELEMENTOS FLEXBOX UTILIZANDO MARGIN
+
+.container{
+	display:flex;
+	flex-direction; column; //PUEDE PROBARSE CON ROW
+	height: 500px;
+}
+
+.item-1{
+	margin-left: auto; //PARA EMPUJAR EL ITEM A LA IZQUIERDA - QUEDA CENTRADO
+}
+
+.item-2{
+	margin-right: auto; //PARA EMPUJAR EL ITEM A LA DERECHA - QUEDA CENTRADO
+	margin-top: auto;
+}
+*/
